@@ -1,0 +1,95 @@
+﻿@*@model IEnumerable<Employee_project.Employe_tab>*@
+
+@model PagedList.IPagedList<Employee_project.Employe_tab>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+<h1>EMPLOYEE DETAILS</h1>
+<style>
+    body {
+        background-image: url('img.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+</style>
+
+<p>
+    @Html.ActionLink("ADD NEW EMPLOYEE", "Create")
+</p>
+@*<table  class="table table-striped">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Designation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Designation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+
+    </table>*@
+
+
+@using (Html.BeginForm())
+{
+    <p>
+        Searech: @Html.TextBox("key_search", ViewBag.FilterValue as string)
+        <input type="submit" value="Find" />
+    </p>
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>@Html.ActionLink("Name", "Index", "Employee", new { sort_order = "Name" }, null)    </th>
+        <td> @Html.ActionLink("DESIGNATION", "Index", "Employee", new { sort_order = "Designation" }, null)     </td>
+        <td> @Html.ActionLink("ADDRESS", "Index", "Employee", new { sort_order = "Addres" }, null)   </td>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(x => item.Name)</td>
+            <td>@Html.DisplayFor(x => item.Designation)</td>
+            <td>@Html.DisplayFor(x => item.Address)</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+</table>
+
+page @(Model.PageCount<Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, Page_No => Url.Action("Index", new { Page_No, sort_order = ViewBag.CurrentSortOrder, filter_value = ViewBag.filterValue }))
